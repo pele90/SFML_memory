@@ -11,6 +11,7 @@ public:
 	void Remove(std::string name);
 	int GetObjectCount() const;
 	VisibleGameObject* Get(std::string name) const;
+	VisibleGameObject* CheckBoundaries(int x, int y);
 
 	void DrawAll(sf::RenderWindow& renderWindow);
 

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "GameObjectManager.h"
+#include "Card.h"
 
 GameObjectManager::GameObjectManager() {}
 
@@ -48,4 +49,23 @@ void GameObjectManager::DrawAll(sf::RenderWindow& renderWindow)
 		itr->second->Draw(renderWindow);
 		itr++;
 	}
+}
+
+VisibleGameObject * GameObjectManager::CheckBoundaries(int x, int y)
+{
+	std::map<std::string, VisibleGameObject*>::const_iterator itr = _gameObjects.begin();
+
+	while (itr != _gameObjects.end())
+	{
+		Card* card = static_cast<Card*>(itr->second);
+
+		if (card->CheckBoundaries(x, y))
+		{
+			return card;
+		}
+			
+		itr++;
+	}
+
+	return nullptr;
 }
