@@ -11,9 +11,11 @@ void Game::Start(void)
 
 	_mainWindow.create(sf::VideoMode(1024, 768, 32), "Memory");
 
+	_table.InitGrid(_mainWindow);
+
 	// Create all cards randomly
 
-	Card* card = new Card(1, "../data/front.png");
+	/*Card* card = new Card(1, "../data/front.png");
 	card->SetPosition(128, 190);
 	_gameObjectManager.Add("card", card);
 
@@ -35,7 +37,7 @@ void Game::Start(void)
 
 	Card* card6 = new Card(6, "../data/front_5.png");
 	card6->SetPosition(384, 380);
-	_gameObjectManager.Add("card6", card6);
+	_gameObjectManager.Add("card6", card6);*/
 
 	// Create all cards randomly
 
@@ -78,11 +80,13 @@ void Game::GameLoop()
 			while (_mainWindow.pollEvent(currentEvent))
 			{
 				_mainWindow.clear(sf::Color(0, 0, 0));
+
+				_table.Draw(_mainWindow);
 				
 				// Get user input
 				if (currentEvent.type == sf::Event::MouseButtonPressed)
 				{
-					Card* card = (Card*) _gameObjectManager.CheckBoundaries(currentEvent.mouseButton.x, currentEvent.mouseButton.y);
+					Card* card = (Card*) _table.CheckIfCardIsClicked(currentEvent.mouseButton.x, currentEvent.mouseButton.y);
 
 					if (card != nullptr)
 						card->Flip();
@@ -94,7 +98,7 @@ void Game::GameLoop()
 				// If mouse click position is inside a card start flipping that card
 
 				// Draw all visible objects
-				_gameObjectManager.DrawAll(_mainWindow);
+				//_gameObjectManager.DrawAll(_mainWindow);
 
 				// Check win condition if card is not flipping
 
@@ -141,4 +145,5 @@ void Game::ShowMenu()
 // A quirk of C++, static member variables need to be instantiated outside of the class
 Game::GameState Game::_gameState = Uninitialized;
 sf::RenderWindow Game::_mainWindow;
+Table Game::_table;
 GameObjectManager Game::_gameObjectManager;

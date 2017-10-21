@@ -28,6 +28,6 @@ private:
 	const float _pi = std::acos(-1);
 	CardAction _cardAction = NOTHING;
 	sf::Clock _clock;
-	sf::Time _currentTime = sf::Time::Zero;
-	sf::Time _delta;
+	sf::Time _currentTime;
+	
 };

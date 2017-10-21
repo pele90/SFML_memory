@@ -3,6 +3,7 @@
 #include "SFML\Graphics.hpp"
 #include "PlayerPaddle.h"
 #include "GameObjectManager.h"
+#include "Table.h"
 
 // This class can be singleton but being static makes it cleaner, no other reason
 class Game {
@@ -22,5 +23,6 @@ private:
 
 	static GameState _gameState;
 	static sf::RenderWindow _mainWindow;
+	static Table _table;
 	static GameObjectManager _gameObjectManager;
 };

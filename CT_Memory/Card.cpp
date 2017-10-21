@@ -3,25 +3,30 @@
 
 Card::Card(int value, std::string textureFilename)
 {
-	_backTexture.loadFromFile("../data/back.png");
+	_backTexture.loadFromFile(CARD_BACK_TEXTURE_GNOME);
 	_backFace.setTexture(_backTexture);
-	_backFace.setOrigin(64, 95);
+
+	float xOrigin = _backFace.getLocalBounds().width / 2;
+	float yOrigin = _backFace.getLocalBounds().height / 2;
+
+	_backFace.setOrigin(xOrigin, yOrigin);
 	_frontTexture.loadFromFile(textureFilename);
 	_frontFace.setTexture(_frontTexture);
-	_frontFace.setOrigin(64, 95);
+	_frontFace.setOrigin(xOrigin, yOrigin);
 	_cardValue = value;
+	_currentTime = sf::Time::Zero;
 }
 
 Card::~Card() {}
 
 void Card::Draw(sf::RenderWindow& renderWindow)
 {
-
-	_delta = _clock.restart();
+	
+	sf::Time delta = _clock.restart();
 	if (_cardAction == SHOW)
 	{
-		if (_currentTime < _spinTime - _delta)
-			_currentTime += _delta;
+		if (_currentTime < _spinTime - delta)
+			_currentTime += delta;
 		else {
 			_currentTime = _spinTime;
 			_cardAction = NOTHING;
@@ -29,8 +34,8 @@ void Card::Draw(sf::RenderWindow& renderWindow)
 	}
 	else if (_cardAction == HIDE)
 	{
-		if (_currentTime > _delta)
-			_currentTime -= _delta;
+		if (_currentTime > delta)
+			_currentTime -= delta;
 		else {
 			_currentTime = sf::Time::Zero;
 			_cardAction = NOTHING;
@@ -58,13 +63,9 @@ void Card::Draw(sf::RenderWindow& renderWindow)
 void Card::Flip()
 {
 	if (_frontShown)
-	{
 		_cardAction = HIDE;
-	}
 	else
-	{
 		_cardAction = SHOW;
-	}
 }
 
 void Card::SetPosition(int x, int y)
