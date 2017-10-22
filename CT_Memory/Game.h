@@ -20,6 +20,7 @@ private:
 	static void ShowNumOfPlayersMenu();
 	static void ShowVictoryScreen();
 	static void IncrementPlayerCounter();
+	static void ResetGame();
 
 	enum GameState { Uninitialized, ShowingSplash, ShowingNumOfPlayersMenu , ShowingMenu, Playing, Exiting, ShowingVictoryScreen };
 

@@ -1,6 +1,6 @@
 #pragma once
 #include "Menu.h"
-#include "Player.h";
+#include "Player.h"
 
 class VictoryScreen : public Menu
 {

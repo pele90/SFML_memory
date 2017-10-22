@@ -16,11 +16,12 @@ public:
 	void Draw(sf::RenderWindow& window);
 	void CheckIfCardIsClicked(int x, int y);
 	bool CheckIfPair();
-	int GetRandomNumberBeetween(int from, int to);
+	size_t GetRandomNumberBeetween(size_t from, size_t to);
 	bool CardFlipping();
-	void GenerateGridSize(int &row, int &column);
-	int GetSelectedCardsSize();
-	int GetRemainingPairs();
+	void GenerateGridSize(size_t &row, size_t &column);
+	size_t GetSelectedCardsSize();
+	size_t GetRemainingPairs();
+	void CleanTable();
 
 private:
 	bool IsPair();
@@ -29,11 +30,11 @@ private:
 	sf::Texture _texture;
 	sf::Sprite _sprite;
 
-	int _rows;
-	int _columns;
+	size_t _rows;
+	size_t _columns;
 
 	std::vector<Card*> _cards;
 	std::vector<Card*> _selectedCards;
-	int _remainingPairs;
+	size_t _remainingPairs;
 
 };

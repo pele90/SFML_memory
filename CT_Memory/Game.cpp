@@ -13,7 +13,7 @@ void Game::Start(void)
 
 	_mainWindow.create(sf::VideoMode(1280, 960, 32), "Memory");
 
-	_mainWindow.setVerticalSyncEnabled(true);
+	//_mainWindow.setVerticalSyncEnabled(true);
 
 	_gameState = Game::ShowingSplash;
 
@@ -89,10 +89,6 @@ void Game::GameLoop()
 						}
 					}
 
-					_table.Draw(_mainWindow);
-
-					_mainWindow.display();
-
 					// Handle other click events
 					if (currentEvent.type == sf::Event::Closed)
 					{
@@ -106,6 +102,11 @@ void Game::GameLoop()
 					}
 				}
 			}
+
+			_table.Draw(_mainWindow);
+
+			_mainWindow.display();
+
 			break;
 		}
 		case Game::ShowingVictoryScreen:
@@ -208,6 +209,9 @@ void Game::ShowVictoryScreen()
 		case Menu::Restart:
 		{
 			_gameState = Game::ShowingNumOfPlayersMenu;
+			
+			ResetGame();
+
 			break;
 		}
 		case Menu::Exit:
@@ -220,6 +224,21 @@ void Game::IncrementPlayerCounter()
 {
 	if (++_playerCounter > _numberOfPlayers - 1)
 		_playerCounter = 0;
+}
+
+void Game::ResetGame()
+{
+	_table.CleanTable();
+	
+	// delete all allocated pointers in _player vector
+	for (auto& player : _players)
+	{
+		delete player;
+		player = 0; // just in case delete fails
+	}
+
+	_players.clear();
+	delete _activePlayer;
 }
 
 // A quirk of C++, static member variables need to be instantiated outside of the class

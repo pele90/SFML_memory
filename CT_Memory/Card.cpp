@@ -5,13 +5,13 @@ Card::Card(int value, std::string textureFilename)
 {
 	_backTexture.loadFromFile(CARD_BACK_TEXTURE_GNOME);
 	_backFace.setTexture(_backTexture);
+	_frontTexture.loadFromFile(textureFilename);
+	_frontFace.setTexture(_frontTexture);
 
 	float xOrigin = _backFace.getLocalBounds().width / 2;
 	float yOrigin = _backFace.getLocalBounds().height / 2;
 
 	_backFace.setOrigin(xOrigin, yOrigin);
-	_frontTexture.loadFromFile(textureFilename);
-	_frontFace.setTexture(_frontTexture);
 	_frontFace.setOrigin(xOrigin, yOrigin);
 	_cardValue = value;
 	_currentTime = sf::Time::Zero;
@@ -45,17 +45,14 @@ void Card::Draw(sf::RenderWindow& renderWindow)
 	_frontShown = _currentTime >= _spinTime / 2.f;
 
 	if (_frontShown) {
-		// Just scale the sprite based on time:
-		float scale = (_currentTime - halfSpinTime) / halfSpinTime;
+		float scale = (_currentTime - _halfSpinTime) / _halfSpinTime;
 
-		// The upscaling is really optional
-		_frontFace.setScale(std::sin(scale * _pi / 2), 1);
+		_frontFace.setScale(std::sin(scale * PI / 2), 1);
 		renderWindow.draw(_frontFace);
 	}
 	else {
-		// Same here
-		float scale = 1.f - _currentTime / halfSpinTime;
-		_backFace.setScale(std::sin(scale * _pi / 2), 1);
+		float scale = 1.f - _currentTime / _halfSpinTime;
+		_backFace.setScale(std::sin(scale * PI / 2), 1);
 		renderWindow.draw(_backFace);
 	}
 }

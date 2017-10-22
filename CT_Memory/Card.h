@@ -1,6 +1,7 @@
 #pragma once
 
 #define SPIN_TIME 0.5
+#define PI 3.14159265358979323846
 
 enum CardAction { NOTHING, SHOW, HIDE };
 
@@ -28,8 +29,7 @@ private:
 
 	bool _frontShown = false;
 	sf::Time _spinTime = sf::seconds(SPIN_TIME);
-	sf::Time halfSpinTime = _spinTime / 2.f;
-	const float _pi = std::acos(-1);
+	sf::Time _halfSpinTime = _spinTime / 2.f;
 	CardAction _cardAction = NOTHING;
 	sf::Clock _clock;
 	sf::Time _currentTime;

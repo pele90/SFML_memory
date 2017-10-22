@@ -42,13 +42,13 @@ void VictoryScreen::Show(sf::RenderWindow & window)
 	window.display();
 }
 
-void VictoryScreen::SetScorebord(const std::vector<Player*> players)
+void VictoryScreen::SetScorebord(std::vector<Player*> players)
 {
 	std::string scoreText;
 
-	for (std::vector<Player*>::const_iterator iter = players.begin(); iter != players.end(); iter++)
+	for (auto& player : players)
 	{
-		scoreText.append((*iter)->GetName() + "\t" + std::to_string((*iter)->GetScore()) + "\n");
+		scoreText.append(player->GetName() + " \t\t " + std::to_string(player->GetScore()) + "\n");
 	}
 
 	_scoreboard.setString(scoreText);

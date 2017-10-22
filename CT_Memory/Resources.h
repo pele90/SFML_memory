@@ -8,3 +8,4 @@
 #define NUMBER_OF_PLAYERS_MENU_TEXTURE "../data/number_of_player_menu.png"
 #define VICTORY_SCREEN_TEXTURE "../data/victory_screen.png"
 #define COOLVETICA_FONT "../data/coolvetica rg.ttf"
+#define TABLE_TEXTURE "../data/table_texture.png"
