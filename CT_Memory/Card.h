@@ -1,7 +1,10 @@
 #pragma once
-#include "VisibleGameObject.h"
 
-class Card : public VisibleGameObject
+#define SPIN_TIME 0.5
+
+enum CardAction { NOTHING, SHOW, HIDE };
+
+class Card
 {
 public:
 	Card(int value, std::string textureFilename);
@@ -12,8 +15,9 @@ public:
 	bool CheckBoundaries(int x, int z);
 
 	void SetPosition(int x, int y);
-
-	enum CardAction { NOTHING, SHOW, HIDE};
+	int GetValue();
+	CardAction GetCardAction();
+	bool IsCardFlipped();
 
 private:
 	int _cardValue;
@@ -23,7 +27,7 @@ private:
 	sf::Sprite _frontFace;
 
 	bool _frontShown = false;
-	sf::Time _spinTime = sf::seconds(1);
+	sf::Time _spinTime = sf::seconds(SPIN_TIME);
 	sf::Time halfSpinTime = _spinTime / 2.f;
 	const float _pi = std::acos(-1);
 	CardAction _cardAction = NOTHING;

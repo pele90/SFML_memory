@@ -1,7 +1,9 @@
 #pragma once
+#include "Screen.h"
 
-class SplashScreen 
+class SplashScreen : public Screen
 {
 public:
-	void Show(sf::RenderWindow& window);
+	SplashScreen(std::string filename);
+	bool Update(sf::RenderWindow& window);
 };

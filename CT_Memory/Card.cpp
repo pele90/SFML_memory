@@ -85,3 +85,18 @@ bool Card::CheckBoundaries(int x, int y)
 
 	return cardRect.contains(x, y);
 }
+
+int Card::GetValue()
+{
+	return _cardValue;
+}
+
+CardAction Card::GetCardAction()
+{
+	return _cardAction;
+}
+
+bool Card::IsCardFlipped()
+{
+	return _frontShown;
+}

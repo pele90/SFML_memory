@@ -14,9 +14,16 @@ public:
 
 	void InitGrid(sf::RenderWindow& window);
 	void Draw(sf::RenderWindow& window);
-	Card* CheckIfCardIsClicked(int x, int y);
-	bool IsPair();
+	void CheckIfCardIsClicked(int x, int y);
+	bool CheckIfPair();
 	int GetRandomNumberBeetween(int from, int to);
+	bool CardFlipping();
+	void GenerateGridSize(int &row, int &column);
+	int GetSelectedCardsSize();
+	int GetRemainingPairs();
+
+private:
+	bool IsPair();
 
 private:
 	sf::Texture _texture;
@@ -26,7 +33,7 @@ private:
 	int _columns;
 
 	std::vector<Card*> _cards;
-	std::vector<Card> _selectedCards;
+	std::vector<Card*> _selectedCards;
 	int _remainingPairs;
 
 };

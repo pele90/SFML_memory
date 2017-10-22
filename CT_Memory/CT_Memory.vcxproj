@@ -161,23 +161,27 @@
   <ItemGroup>
     <ClInclude Include="Card.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="MainMenu.h" />
-    <ClInclude Include="PlayerPaddle.h" />
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="NumberOfPlayersMenu.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Resources.h" />
+    <ClInclude Include="Screen.h" />
     <ClInclude Include="SplashScreen.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Table.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="VisibleGameObject.h" />
+    <ClInclude Include="VictoryScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Card.cpp" />
     <ClCompile Include="CT_Memory.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="MainMenu.cpp" />
-    <ClCompile Include="PlayerPaddle.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="NumberOfPlayersMenu.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Screen.cpp" />
     <ClCompile Include="SplashScreen.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -186,7 +190,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Table.cpp" />
-    <ClCompile Include="VisibleGameObject.cpp" />
+    <ClCompile Include="VictoryScreen.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

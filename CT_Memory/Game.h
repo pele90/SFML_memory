@@ -1,9 +1,8 @@
 #pragma once
 #include "SFML\Window.hpp"
 #include "SFML\Graphics.hpp"
-#include "PlayerPaddle.h"
-#include "GameObjectManager.h"
 #include "Table.h"
+#include "Player.h"
 
 // This class can be singleton but being static makes it cleaner, no other reason
 class Game {
@@ -18,11 +17,17 @@ private:
 
 	static void ShowSplashScreen();
 	static void ShowMenu();
+	static void ShowNumOfPlayersMenu();
+	static void ShowVictoryScreen();
+	static void IncrementPlayerCounter();
 
-	enum GameState { Uninitialized, ShowingSplash, Paused, ShowingMenu, Playing, Exiting };
+	enum GameState { Uninitialized, ShowingSplash, ShowingNumOfPlayersMenu , ShowingMenu, Playing, Exiting, ShowingVictoryScreen };
 
 	static GameState _gameState;
 	static sf::RenderWindow _mainWindow;
 	static Table _table;
-	static GameObjectManager _gameObjectManager;
+	static std::vector<Player*> _players;
+	static Player* _activePlayer;
+	static int _numberOfPlayers;
+	static int _playerCounter;
 };

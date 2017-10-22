@@ -2,6 +2,8 @@
 #include "Game.h"
 #include "SplashScreen.h"
 #include "MainMenu.h"
+#include "NumberOfPlayersMenu.h"
+#include "VictoryScreen.h"
 #include "Card.h"
 
 void Game::Start(void)
@@ -9,37 +11,9 @@ void Game::Start(void)
 	if (_gameState != Uninitialized)
 		return;
 
-	_mainWindow.create(sf::VideoMode(1024, 768, 32), "Memory");
+	_mainWindow.create(sf::VideoMode(1280, 960, 32), "Memory");
 
-	_table.InitGrid(_mainWindow);
-
-	// Create all cards randomly
-
-	/*Card* card = new Card(1, "../data/front.png");
-	card->SetPosition(128, 190);
-	_gameObjectManager.Add("card", card);
-
-	Card* card2 = new Card(2, "../data/front_1.png");
-	card2->SetPosition(256, 190);
-	_gameObjectManager.Add("card2", card2);
-
-	Card* card3 = new Card(3, "../data/front_2.png");
-	card3->SetPosition(384, 190);
-	_gameObjectManager.Add("card3", card3);
-
-	Card* card4 = new Card(4, "../data/front_3.png");
-	card4->SetPosition(128, 380);
-	_gameObjectManager.Add("card4", card4);
-
-	Card* card5 = new Card(5, "../data/front_4.png");
-	card5->SetPosition(256, 380);
-	_gameObjectManager.Add("card5", card5);
-
-	Card* card6 = new Card(6, "../data/front_5.png");
-	card6->SetPosition(384, 380);
-	_gameObjectManager.Add("card6", card6);*/
-
-	// Create all cards randomly
+	_mainWindow.setVerticalSyncEnabled(true);
 
 	_gameState = Game::ShowingSplash;
 
@@ -69,6 +43,11 @@ void Game::GameLoop()
 			ShowSplashScreen();
 			break;
 		}
+		case Game::ShowingNumOfPlayersMenu:
+		{
+			ShowNumOfPlayersMenu();
+			break;
+		}
 		case Game::ShowingMenu:
 		{
 			ShowMenu();
@@ -81,69 +60,173 @@ void Game::GameLoop()
 			{
 				_mainWindow.clear(sf::Color(0, 0, 0));
 
-				_table.Draw(_mainWindow);
-				
-				// Get user input
-				if (currentEvent.type == sf::Event::MouseButtonPressed)
+				if (_table.GetRemainingPairs() == 0)
 				{
-					Card* card = (Card*) _table.CheckIfCardIsClicked(currentEvent.mouseButton.x, currentEvent.mouseButton.y);
-
-					if (card != nullptr)
-						card->Flip();
-					// check if mouse click position is inside any of the cards
-					//return HandleClick(menuEvent.mouseButton.x, menuEvent.mouseButton.y);
+					_gameState = Game::ShowingVictoryScreen;
 				}
-
-				// Check and update objects
-				// If mouse click position is inside a card start flipping that card
-
-				// Draw all visible objects
-				//_gameObjectManager.DrawAll(_mainWindow);
-
-				// Check win condition if card is not flipping
-
-				_mainWindow.display();
-
-				if (currentEvent.type == sf::Event::Closed)
+				else
 				{
-					_gameState = Game::Exiting;
-				}
+					// Check if 2 cards are waiting to be checked and no card is being flipped
+					if (!_table.CardFlipping() && _table.GetSelectedCardsSize() == 2)
+						if (_table.CheckIfPair())
+						{
+							_activePlayer->AddScore();
+						}
+						else
+						{
+							IncrementPlayerCounter();
+							_activePlayer = _players.at(_playerCounter);
+						}
 
-				if (currentEvent.type == sf::Event::KeyPressed)
-				{
-					if (currentEvent.key.code == sf::Keyboard::Escape)
-						ShowMenu();
+					// Get user input
+					if (currentEvent.type == sf::Event::MouseButtonPressed)
+					{
+						// If no card is being flipped
+						if (!_table.CardFlipping())
+						{
+							// If mouse click position is inside a card start flipping that card
+							_table.CheckIfCardIsClicked(currentEvent.mouseButton.x, currentEvent.mouseButton.y);
+						}
+					}
+
+					_table.Draw(_mainWindow);
+
+					_mainWindow.display();
+
+					// Handle other click events
+					if (currentEvent.type == sf::Event::Closed)
+					{
+						_gameState = Game::Exiting;
+					}
+
+					if (currentEvent.type == sf::Event::KeyPressed)
+					{
+						if (currentEvent.key.code == sf::Keyboard::Escape)
+							ShowMenu();
+					}
 				}
 			}
 			break;
 		}
+		case Game::ShowingVictoryScreen:
+		{
+			ShowVictoryScreen();
+			break;
+		}
 	}
+
 }
 
 void Game::ShowSplashScreen()
 {
-	SplashScreen splashScreen;
+	SplashScreen splashScreen(SPLASH_SCREEN_TEXTURE);
 	splashScreen.Show(_mainWindow);
-	_gameState = Game::ShowingMenu;
+	if (!splashScreen.Update(_mainWindow))
+		_gameState = Game::Exiting;
+	else
+		_gameState = Game::ShowingNumOfPlayersMenu;
 }
 
 void Game::ShowMenu()
 {
-	MainMenu mainMenu;
-	MainMenu::MenuResult result = mainMenu.Show(_mainWindow);
+	MainMenu mainMenu(MAIN_MENU_TEXTURE);
+	mainMenu.Show(_mainWindow);
+	Menu::MenuResult result = mainMenu.Update(_mainWindow);
 	switch (result)
 	{
-	case MainMenu::Exit:
-		_gameState = Game::Exiting;
-		break;
-	case MainMenu::Play:
-		_gameState = Game::Playing;
-		break;
+		case MainMenu::Exit:
+			_gameState = Game::Exiting;
+			break;
+		case MainMenu::Play:
+			_gameState = Game::Playing;
+			break;
 	}
+}
+
+void Game::ShowNumOfPlayersMenu()
+{
+	NumberOfPlayersMenu numberOfPlayersMenu(NUMBER_OF_PLAYERS_MENU_TEXTURE);
+	numberOfPlayersMenu.Show(_mainWindow);
+	Menu::MenuResult result = numberOfPlayersMenu.Update(_mainWindow);
+	switch (result)
+	{
+		case Menu::One:
+		{
+			_numberOfPlayers = 1;
+			_gameState = Game::ShowingMenu;
+			break;
+		}
+		case Menu::Two:
+		{
+			_numberOfPlayers = 2;
+			_gameState = Game::ShowingMenu;
+			break;
+		}
+		case Menu::Three:
+		{
+			_numberOfPlayers = 3;
+			_gameState = Game::ShowingMenu;
+			break;
+		}
+		case Menu::Four:
+		{
+			_numberOfPlayers = 4;
+			_gameState = Game::ShowingMenu;
+			break;
+		}
+		case MainMenu::Exit:
+		{
+			_gameState = Game::Exiting;
+			return;
+		}
+	}
+
+	if (result != Menu::Nothing)
+	{
+		for (int i = 0; i < _numberOfPlayers; i++)
+		{
+			Player* player = new Player("Player " + std::to_string(i + 1));
+
+			std::cout << "Player created with the name: " << player->GetName() << std::endl;
+
+			_players.push_back(player);
+		}
+
+		_activePlayer = _players.at(0);
+		_table.InitGrid(_mainWindow);
+	}
+}
+
+void Game::ShowVictoryScreen()
+{
+	VictoryScreen victoryScreen(VICTORY_SCREEN_TEXTURE);
+	victoryScreen.SetScorebord(_players);
+	victoryScreen.Show(_mainWindow);
+	Menu::MenuResult result = victoryScreen.Update(_mainWindow);
+	switch (result)
+	{
+		case Menu::Restart:
+		{
+			_gameState = Game::ShowingNumOfPlayersMenu;
+			break;
+		}
+		case Menu::Exit:
+			_gameState = Game::Exiting;
+			break;
+	}
+}
+
+void Game::IncrementPlayerCounter()
+{
+	if (++_playerCounter > _numberOfPlayers - 1)
+		_playerCounter = 0;
 }
 
 // A quirk of C++, static member variables need to be instantiated outside of the class
 Game::GameState Game::_gameState = Uninitialized;
 sf::RenderWindow Game::_mainWindow;
 Table Game::_table;
-GameObjectManager Game::_gameObjectManager;
+std::vector<Player*> Game::_players;
+Player* Game::_activePlayer;
+int Game::_numberOfPlayers;
+int Game::_playerCounter = 0;
