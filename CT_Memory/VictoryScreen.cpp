@@ -48,7 +48,7 @@ void VictoryScreen::SetScorebord(std::vector<Player*> players)
 
 	for (auto& player : players)
 	{
-		scoreText.append(player->GetName() + " \t\t " + std::to_string(player->GetScore()) + "\n");
+		scoreText.append(player->GetName() + " \t\t " + std::to_string(player->GetScore()) + "\n\n");
 	}
 
 	_scoreboard.setString(scoreText);

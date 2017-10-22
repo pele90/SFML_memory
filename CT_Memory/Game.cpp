@@ -13,8 +13,6 @@ void Game::Start(void)
 
 	_mainWindow.create(sf::VideoMode(1280, 960, 32), "Memory");
 
-	//_mainWindow.setVerticalSyncEnabled(true);
-
 	_gameState = Game::ShowingSplash;
 
 	while (!IsExiting())
@@ -209,9 +207,7 @@ void Game::ShowVictoryScreen()
 		case Menu::Restart:
 		{
 			_gameState = Game::ShowingNumOfPlayersMenu;
-			
 			ResetGame();
-
 			break;
 		}
 		case Menu::Exit:
@@ -238,7 +234,7 @@ void Game::ResetGame()
 	}
 
 	_players.clear();
-	delete _activePlayer;
+	_activePlayer = 0;
 }
 
 // A quirk of C++, static member variables need to be instantiated outside of the class
