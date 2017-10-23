@@ -3,15 +3,14 @@
 
 GUI::GUI() {}
 
-GUI::~GUI() {}
-
 void GUI::Setup(sf::RenderWindow& window, std::vector<Player*> players)
 {
 	if (!_font.loadFromFile(COOLVETICA_FONT))
 		std::cerr << "Could not load font" << std::endl;
 
 	SetupLocations(window);
-	int i = 0;
+
+	int index = 0;
 
 	for (auto& player : players)
 	{
@@ -20,12 +19,13 @@ void GUI::Setup(sf::RenderWindow& window, std::vector<Player*> players)
 		playerName.setCharacterSize(52);
 		playerName.setFillColor(sf::Color(0, 0, 0, 255));
 		playerName.setString(player->GetName());
-		playerName.setPosition(_placements.at(i)._position.x, _placements.at(i)._position.y);
-		playerName.setRotation(_placements.at(i)._angle);
+		playerName.setPosition(_placements.at(index)._position.x,
+							   _placements.at(index)._position.y);
+		playerName.setRotation(_placements.at(index)._angle);
 
 		_playerNames.push_back(playerName);
 
-		++i;
+		++index;
 	}
 }
 
@@ -39,6 +39,8 @@ void GUI::Draw(sf::RenderWindow & window)
 
 void GUI::SetupLocations(sf::RenderWindow& window)
 {
+	// Manually setup locations on screen for players name
+
 	int halfWidth = window.getSize().x / 2;
 	int halfHeight = window.getSize().y / 2;
 
@@ -73,7 +75,12 @@ void GUI::SetActivePlayerColor(int i)
 	_playerNames.at(i).setFillColor(sf::Color(255, 215, 0));
 }
 
-void GUI::SetDeactivePlayerColor(int i)
+void GUI::SetDefaultPlayerColor(int i)
 {
 	_playerNames.at(i).setFillColor(sf::Color::Black);
+}
+
+void GUI::Reset()
+{
+	_playerNames.clear();
 }

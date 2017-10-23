@@ -42,7 +42,7 @@ VictoryScreen::VictoryScreen(std::string filename) : Menu(filename)
 
 void VictoryScreen::Show(sf::RenderWindow & window)
 {
-	window.draw(_sprite);
+	window.draw(_backgroundSprite);
 	window.draw(_winner);
 	window.draw(_scoreboard);
 	window.display();
@@ -59,7 +59,21 @@ void VictoryScreen::SetScorebord(std::vector<Player*> players)
 
 	std::sort(players.begin(), players.end(), compareFunction);
 
-	winnerText.append("The winner is " + players.at(0)->GetName());
+	std::vector<Player*> duplicates;
+
+	if (CheckForMultipleWinners(duplicates, players))
+	{
+		winnerText.append("The winners are: \n");
+
+		for (auto& dupl : duplicates)
+		{
+			winnerText.append(dupl->GetName() + "\n");
+		}
+	}
+	else
+	{
+		winnerText.append("The winner is " + players.at(0)->GetName());
+	}
 
 	for (auto& player : players)
 	{
@@ -68,4 +82,28 @@ void VictoryScreen::SetScorebord(std::vector<Player*> players)
 
 	_winner.setString(winnerText);
 	_scoreboard.setString(scoreText);
+}
+
+ bool VictoryScreen::CheckForMultipleWinners(std::vector<Player*>& temp, const std::vector<Player*> players)
+{
+	int highestScore = -1;
+
+	for (auto& player : players)
+	{
+		if (highestScore == -1)
+		{
+			highestScore = player->GetScore();
+			temp.push_back(player);
+		}
+		else
+		{
+			if (player->GetScore() == highestScore)
+				temp.push_back(player);
+		}
+	}
+
+	if (temp.size() > 1)
+		return true;
+
+	return false;
 }

@@ -3,14 +3,14 @@
 
 Screen::Screen(std::string filename)
 {
-	if (!_texture.loadFromFile(filename))
+	if (!_backgroundTexture.loadFromFile(filename))
 		std::cerr << "Cannot load texture from: " << filename << std::endl;
 
-	_sprite.setTexture(_texture);
+	_backgroundSprite.setTexture(_backgroundTexture);
 }
 
 void Screen::Show(sf::RenderWindow& window)
 {
-	window.draw(_sprite);
+	window.draw(_backgroundSprite);
 	window.display();
 }

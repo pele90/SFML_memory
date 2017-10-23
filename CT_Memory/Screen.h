@@ -7,6 +7,6 @@ public:
 	virtual void Show(sf::RenderWindow& window);
 	
 protected:
-	sf::Texture _texture;
-	sf::Sprite _sprite; 
+	sf::Texture _backgroundTexture;
+	sf::Sprite _backgroundSprite; 
 };

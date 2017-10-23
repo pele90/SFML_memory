@@ -3,8 +3,9 @@
 
 struct Placement
 {
-	Placement(sf::Vector2u position, float angle) 
+	Placement(sf::Vector2u position, float angle)
 		: _position(position), _angle(angle) {}
+
 	sf::Vector2u _position;
 	float _angle;
 };
@@ -13,12 +14,12 @@ class GUI
 {
 public:
 	GUI();
-	~GUI();
 
 	void Setup(sf::RenderWindow& window, std::vector<Player*> players);
 	void Draw(sf::RenderWindow& window);
 	void SetActivePlayerColor(int i);
-	void SetDeactivePlayerColor(int i);
+	void SetDefaultPlayerColor(int i);
+	void Reset();
 
 private:
 	void SetupLocations(sf::RenderWindow& window);

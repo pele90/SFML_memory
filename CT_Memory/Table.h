@@ -10,25 +10,25 @@ class Table
 {
 public:
 	Table();
-	~Table();
 
 	void InitGrid(sf::RenderWindow& window);
 	void Draw(sf::RenderWindow& window);
+	void CleanTable();
 	void CheckIfCardIsClicked(int x, int y);
-	bool CheckIfPair();
-	size_t GetRandomNumberBeetween(size_t from, size_t to);
-	bool CardFlipping();
 	void GenerateGridSize(size_t &row, size_t &column);
+	bool CheckSelectedCards();
+	bool CardIsFlipping();
+	size_t GetRandomNumberBeetween(size_t from, size_t to);
 	size_t GetSelectedCardsSize();
 	size_t GetRemainingPairs();
-	void CleanTable();
+	
 
 private:
 	bool IsPair();
 
 private:
-	sf::Texture _texture;
-	sf::Sprite _sprite;
+	sf::Texture _backgroundTexture;
+	sf::Sprite _backgroundSprite;
 	size_t _rows;
 	size_t _columns;
 	std::vector<Card*> _cards;

@@ -4,20 +4,20 @@
 Card::Card(int value, std::string textureFilename)
 {
 	_backTexture.loadFromFile(CARD_BACK_TEXTURE_GNOME);
-	_backFace.setTexture(_backTexture);
+	_backSprite.setTexture(_backTexture);
 	_frontTexture.loadFromFile(textureFilename);
-	_frontFace.setTexture(_frontTexture);
+	_frontSprite.setTexture(_frontTexture);
 
-	float xOrigin = _backFace.getLocalBounds().width / 2;
-	float yOrigin = _backFace.getLocalBounds().height / 2;
+	// Calculating and setting the origin of all transformations for back and front sprites
+	float xOrigin = _backSprite.getLocalBounds().width / 2; 
+	float yOrigin = _backSprite.getLocalBounds().height / 2;
 
-	_backFace.setOrigin(xOrigin, yOrigin);
-	_frontFace.setOrigin(xOrigin, yOrigin);
+	_backSprite.setOrigin(xOrigin, yOrigin);
+	_frontSprite.setOrigin(xOrigin, yOrigin);
+
 	_cardValue = value;
 	_currentTime = sf::Time::Zero;
 }
-
-Card::~Card() {}
 
 void Card::Draw(sf::RenderWindow& renderWindow)
 {
@@ -46,13 +46,13 @@ void Card::Draw(sf::RenderWindow& renderWindow)
 	if (_frontShown) {
 		float scale = (_currentTime - _halfSpinTime) / _halfSpinTime;
 
-		_frontFace.setScale(std::sin(scale * PI / 2), 1);
-		renderWindow.draw(_frontFace);
+		_frontSprite.setScale(std::sin(scale * PI / 2), 1);
+		renderWindow.draw(_frontSprite);
 	}
 	else {
 		float scale = 1.f - _currentTime / _halfSpinTime;
-		_backFace.setScale(std::sin(scale * PI / 2), 1);
-		renderWindow.draw(_backFace);
+		_backSprite.setScale(std::sin(scale * PI / 2), 1);
+		renderWindow.draw(_backSprite);
 	}
 }
 
@@ -66,8 +66,8 @@ void Card::Flip()
 
 void Card::SetPosition(int x, int y)
 {
-	_backFace.setPosition(x, y);
-	_frontFace.setPosition(x, y);
+	_backSprite.setPosition(x, y);
+	_frontSprite.setPosition(x, y);
 }
 
 bool Card::CheckBoundaries(int x, int y)
@@ -75,9 +75,9 @@ bool Card::CheckBoundaries(int x, int y)
 	sf::FloatRect cardRect;
 
 	if(!_frontShown)
-		cardRect = _backFace.getGlobalBounds();
+		cardRect = _backSprite.getGlobalBounds();
 	else
-		cardRect = _frontFace.getGlobalBounds();
+		cardRect = _frontSprite.getGlobalBounds();
 
 	return cardRect.contains(x, y);
 }

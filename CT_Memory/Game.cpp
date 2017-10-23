@@ -58,34 +58,42 @@ void Game::GameLoop()
 			if (_table.GetRemainingPairs() == 0)
 			{
 				_gameState = Game::ShowingVictoryScreen;
+				_gui.SetDefaultPlayerColor(_playerCounter);
 			}
 			else
 			{
-				// Check if 2 cards are waiting to be checked and no card is being flipped
-				if (!_table.CardFlipping() && _table.GetSelectedCardsSize() == 2)
+				// Check if no card is being flipped 
+				// and 2 cards are waiting to be checked i.e. are in the <selectedCards> container
+				if (!_table.CardIsFlipping() && _table.GetSelectedCardsSize() == 2)
 				{
-					if (_table.CheckIfPair())
+					// If two cards in the <selectedCards> container have the same value
+					if (_table.CheckSelectedCards())
 					{
 						_activePlayer->AddScore();
 					}
 					else
 					{
-						_gui.SetDeactivePlayerColor(_playerCounter);
-						IncrementPlayerCounter();
-						_activePlayer = _players.at(_playerCounter);
-						_gui.SetActivePlayerColor(_playerCounter);
+						// Return previously active player's text color to default
+						_gui.SetDefaultPlayerColor(_playerCounter);
 
+						IncrementPlayerCounter();
+
+						// Set next player as active
+						_activePlayer = _players.at(_playerCounter);
+
+						// Set the new active player's text color to gold
+						_gui.SetActivePlayerColor(_playerCounter);
 					}
 				}
 
 				sf::Event currentEvent;
 				while (_mainWindow.pollEvent(currentEvent))
 				{
-					// Get user input
+					// Get player's mouse input
 					if (currentEvent.type == sf::Event::MouseButtonPressed)
 					{
 						// If no card is being flipped
-						if (!_table.CardFlipping())
+						if (!_table.CardIsFlipping())
 						{
 							// If mouse click position is inside a card start flipping that card
 							_table.CheckIfCardIsClicked(currentEvent.mouseButton.x, currentEvent.mouseButton.y);
@@ -105,14 +113,14 @@ void Game::GameLoop()
 					}
 				}
 
+				// Draw table and cards sprites
 				_table.Draw(_mainWindow);
 
 				_gui.Draw(_mainWindow);
 
+				// SFML method for showing all drawn textures and sprites on screen
 				_mainWindow.display();
-
 			}
-
 			break;
 		}
 		case Game::ShowingVictoryScreen:
@@ -129,9 +137,13 @@ void Game::ShowSplashScreen()
 	SplashScreen splashScreen(SPLASH_SCREEN_TEXTURE);
 	splashScreen.Show(_mainWindow);
 	if (!splashScreen.Update(_mainWindow))
+	{
 		_gameState = Game::Exiting;
+	}
 	else
+	{
 		_gameState = Game::ShowingNumOfPlayersMenu;
+	}
 }
 
 void Game::ShowMenu()
@@ -142,11 +154,15 @@ void Game::ShowMenu()
 	switch (result)
 	{
 		case MainMenu::Exit:
+		{
 			_gameState = Game::Exiting;
 			break;
+		}
 		case MainMenu::Play:
+		{
 			_gameState = Game::Playing;
 			break;
+		}
 	}
 }
 
@@ -192,9 +208,7 @@ void Game::ShowNumOfPlayersMenu()
 	{
 		for (int i = 0; i < _numberOfPlayers; i++)
 		{
-			Player* player = new Player("Player " + std::to_string(i + 1));
-
-			std::cout << "Player created with the name: " << player->GetName() << std::endl;
+			Player* player = new Player("Player" + std::to_string(i + 2));
 
 			_players.push_back(player);
 		}
@@ -204,6 +218,7 @@ void Game::ShowNumOfPlayersMenu()
 		_table.InitGrid(_mainWindow);
 
 		_gui.Setup(_mainWindow, _players);
+
 		_gui.SetActivePlayerColor(_playerCounter);
 	}
 }
@@ -238,7 +253,7 @@ void Game::ResetGame()
 {
 	_table.CleanTable();
 
-	// delete all allocated pointers in _player vector
+	// delete all allocated pointers in <_players> container
 	for (auto& player : _players)
 	{
 		delete player;
@@ -246,7 +261,9 @@ void Game::ResetGame()
 	}
 
 	_players.clear();
+	_gui.Reset();
 	_activePlayer = 0;
+	_playerCounter = 0;
 }
 
 // A quirk of C++, static member variables need to be instantiated outside of the class

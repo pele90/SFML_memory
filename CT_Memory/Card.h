@@ -8,23 +8,21 @@ class Card
 {
 public:
 	Card(int value, std::string textureFilename);
-	~Card();
 
 	void Flip();
-	void Draw(sf::RenderWindow& renderWindow);
-	bool CheckBoundaries(int x, int z);
-
-	void SetPosition(int x, int y);
 	int GetValue();
-	CardAction GetCardAction();
 	bool IsCardFlipped();
+	CardAction GetCardAction();
+	void SetPosition(int x, int y);
+	bool CheckBoundaries(int x, int z);
+	void Draw(sf::RenderWindow& renderWindow);
 
 private:
 	int _cardValue;
 	sf::Texture _backTexture;
-	sf::Sprite _backFace;
+	sf::Sprite _backSprite;
 	sf::Texture _frontTexture;
-	sf::Sprite _frontFace;
+	sf::Sprite _frontSprite;
 
 	bool _frontShown = false;
 	sf::Time _spinTime = sf::seconds(SPIN_TIME);

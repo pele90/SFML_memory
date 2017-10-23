@@ -4,7 +4,16 @@
 class Menu : public Screen
 {
 public:
-	enum MenuResult { Nothing, Exit, Play, Restart, One, Two, Three, Four };
+	enum MenuResult {
+		Nothing,
+		Exit,
+		Play,
+		Restart,
+		One,
+		Two,
+		Three,
+		Four
+	};
 
 	struct MenuItem
 	{

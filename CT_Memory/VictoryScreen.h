@@ -7,11 +7,8 @@ class VictoryScreen : public Menu
 public:
 	VictoryScreen(std::string filename);
 	virtual void Show(sf::RenderWindow& window);
-
 	void SetScorebord(const std::vector<Player*> players);
-
-//private:
-	//bool compareFunction(const Player* left, const Player* right);
+	bool CheckForMultipleWinners(std::vector<Player*>& temp, const std::vector<Player*> players);
 
 private:
 	sf::Text _scoreboard;

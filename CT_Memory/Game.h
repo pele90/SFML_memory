@@ -5,8 +5,6 @@
 #include "Player.h"
 #include "GUI.h"
 
-#define DELAY_TIME 1000
-
 // This class can be singleton but being static makes it cleaner, no other reason
 class Game {
 
@@ -24,7 +22,15 @@ private:
 	static void IncrementPlayerCounter();
 	static void ResetGame();
 
-	enum GameState { Uninitialized, ShowingSplash, ShowingNumOfPlayersMenu , ShowingMenu, Playing, Exiting, ShowingVictoryScreen };
+	enum GameState { 
+		Uninitialized,
+		ShowingSplash,
+		ShowingNumOfPlayersMenu,
+		ShowingMenu,
+		Playing,
+		Exiting,
+		ShowingVictoryScreen 
+	};
 
 	static GameState _gameState;
 	static sf::RenderWindow _mainWindow;

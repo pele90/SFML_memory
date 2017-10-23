@@ -4,7 +4,6 @@
 #include "SFML\Graphics.hpp"
 #include "Menu.h"
 
-
 class MainMenu : public Menu
 {
 public:
