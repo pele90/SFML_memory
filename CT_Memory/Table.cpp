@@ -4,7 +4,6 @@
 Table::Table()
 {
 	_texture.loadFromFile(TABLE_TEXTURE);
-
 	_sprite.setTexture(_texture);
 
 	// Initialize random seed
@@ -19,6 +18,9 @@ void Table::InitGrid(sf::RenderWindow& window)
 
 	GenerateGridSize(_rows, _columns);
 
+	//_rows = 4;
+	//_columns = 5;
+
 	_remainingPairs = (_rows * _columns) / 2;
 
 	std::vector<Card*> availableCards;
@@ -26,8 +28,8 @@ void Table::InitGrid(sf::RenderWindow& window)
 	// Create pairs of cards
 	for (int i = 0; i < _remainingPairs; i++)
 	{
-		availableCards.push_back(new Card(i, CARD_FRONT_TEXTURE));
-		availableCards.push_back(new Card(i, CARD_FRONT_TEXTURE));
+		availableCards.push_back(new Card(i, CARD_FRONT_TEXTURE + std::to_string(i) + ".png"));
+		availableCards.push_back(new Card(i, CARD_FRONT_TEXTURE + std::to_string(i) + ".png"));
 	}
 
 	size_t xOffset = window.getSize().x / (_columns + 1);
@@ -61,29 +63,11 @@ void Table::Draw(sf::RenderWindow& window)
 	{
 		card->Draw(window);
 	}
-
-	/*for (std::vector<Card*>::iterator iter = _cards.begin(); iter != _cards.end(); iter++)
-	{
-		(*iter)->Draw(window);
-	}*/
 }
 
 // Check if any card is clicked, if true return pointer to that card
 void Table::CheckIfCardIsClicked(int x, int y)
 {
-	//for (std::vector<Card*>::iterator iter = _cards.begin(); iter != _cards.end(); iter++)
-	//{
-	//	// Check if any of the card bounds contains x and y;
-	//	if ((*iter)->CheckBoundaries(x, y))
-	//	{
-	//		if (!(*iter)->IsCardFlipped())
-	//		{
-	//			(*iter)->Flip();
-	//			_selectedCards.push_back((*iter));
-	//		}
-	//	}
-	//}
-
 	for (auto& card : _cards)
 	{
 		if (card->CheckBoundaries(x, y))
@@ -143,12 +127,6 @@ bool Table::CardFlipping()
 		if (card->GetCardAction() == CardAction::SHOW || card->GetCardAction() == CardAction::HIDE)
 			return true;
 	}
-
-	/*for (std::vector<Card*>::iterator iter = _cards.begin(); iter != _cards.end(); iter++)
-	{
-		if ((*iter)->GetCardAction() == CardAction::SHOW || (*iter)->GetCardAction() == CardAction::HIDE)
-			return true;
-	}*/
 
 	return false;
 }

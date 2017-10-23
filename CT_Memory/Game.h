@@ -3,12 +3,14 @@
 #include "SFML\Graphics.hpp"
 #include "Table.h"
 #include "Player.h"
+#include "GUI.h"
+
+#define DELAY_TIME 1000
 
 // This class can be singleton but being static makes it cleaner, no other reason
 class Game {
 
 public:
-
 	static void Start();
 
 private:
@@ -31,4 +33,6 @@ private:
 	static Player* _activePlayer;
 	static int _numberOfPlayers;
 	static int _playerCounter;
+	static GUI _gui;
+	static bool _waiting;
 };

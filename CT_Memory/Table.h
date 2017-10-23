@@ -29,12 +29,9 @@ private:
 private:
 	sf::Texture _texture;
 	sf::Sprite _sprite;
-
 	size_t _rows;
 	size_t _columns;
-
 	std::vector<Card*> _cards;
 	std::vector<Card*> _selectedCards;
 	size_t _remainingPairs;
-
 };

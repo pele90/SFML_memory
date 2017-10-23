@@ -1,7 +1,6 @@
 #pragma once
 
-#define SPIN_TIME 0.5
-#define PI 3.14159265358979323846
+#define SPIN_TIME 1
 
 enum CardAction { NOTHING, SHOW, HIDE };
 

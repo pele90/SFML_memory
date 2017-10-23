@@ -21,7 +21,6 @@ Card::~Card() {}
 
 void Card::Draw(sf::RenderWindow& renderWindow)
 {
-	
 	sf::Time delta = _clock.restart();
 	if (_cardAction == SHOW)
 	{

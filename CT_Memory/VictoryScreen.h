@@ -10,7 +10,11 @@ public:
 
 	void SetScorebord(const std::vector<Player*> players);
 
+//private:
+	//bool compareFunction(const Player* left, const Player* right);
+
 private:
 	sf::Text _scoreboard;
+	sf::Text _winner;
 	sf::Font _font;
 };

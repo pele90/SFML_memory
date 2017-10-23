@@ -53,29 +53,34 @@ void Game::GameLoop()
 		}
 		case Game::Playing:
 		{
-			sf::Event currentEvent;
-			while (_mainWindow.pollEvent(currentEvent))
+			_mainWindow.clear(sf::Color(0, 0, 0));
+
+			if (_table.GetRemainingPairs() == 0)
 			{
-				_mainWindow.clear(sf::Color(0, 0, 0));
-
-				if (_table.GetRemainingPairs() == 0)
+				_gameState = Game::ShowingVictoryScreen;
+			}
+			else
+			{
+				// Check if 2 cards are waiting to be checked and no card is being flipped
+				if (!_table.CardFlipping() && _table.GetSelectedCardsSize() == 2)
 				{
-					_gameState = Game::ShowingVictoryScreen;
+					if (_table.CheckIfPair())
+					{
+						_activePlayer->AddScore();
+					}
+					else
+					{
+						_gui.SetDeactivePlayerColor(_playerCounter);
+						IncrementPlayerCounter();
+						_activePlayer = _players.at(_playerCounter);
+						_gui.SetActivePlayerColor(_playerCounter);
+
+					}
 				}
-				else
-				{
-					// Check if 2 cards are waiting to be checked and no card is being flipped
-					if (!_table.CardFlipping() && _table.GetSelectedCardsSize() == 2)
-						if (_table.CheckIfPair())
-						{
-							_activePlayer->AddScore();
-						}
-						else
-						{
-							IncrementPlayerCounter();
-							_activePlayer = _players.at(_playerCounter);
-						}
 
+				sf::Event currentEvent;
+				while (_mainWindow.pollEvent(currentEvent))
+				{
 					// Get user input
 					if (currentEvent.type == sf::Event::MouseButtonPressed)
 					{
@@ -99,11 +104,14 @@ void Game::GameLoop()
 							ShowMenu();
 					}
 				}
+
+				_table.Draw(_mainWindow);
+
+				_gui.Draw(_mainWindow);
+
+				_mainWindow.display();
+
 			}
-
-			_table.Draw(_mainWindow);
-
-			_mainWindow.display();
 
 			break;
 		}
@@ -192,7 +200,11 @@ void Game::ShowNumOfPlayersMenu()
 		}
 
 		_activePlayer = _players.at(0);
+
 		_table.InitGrid(_mainWindow);
+
+		_gui.Setup(_mainWindow, _players);
+		_gui.SetActivePlayerColor(_playerCounter);
 	}
 }
 
@@ -225,7 +237,7 @@ void Game::IncrementPlayerCounter()
 void Game::ResetGame()
 {
 	_table.CleanTable();
-	
+
 	// delete all allocated pointers in _player vector
 	for (auto& player : _players)
 	{
@@ -245,3 +257,5 @@ std::vector<Player*> Game::_players;
 Player* Game::_activePlayer;
 int Game::_numberOfPlayers;
 int Game::_playerCounter = 0;
+GUI Game::_gui;
+bool Game::_waiting;

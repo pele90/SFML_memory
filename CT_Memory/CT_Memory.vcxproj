@@ -161,6 +161,7 @@
   <ItemGroup>
     <ClInclude Include="Card.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GUI.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="NumberOfPlayersMenu.h" />
@@ -177,6 +178,7 @@
     <ClCompile Include="Card.cpp" />
     <ClCompile Include="CT_Memory.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GUI.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="NumberOfPlayersMenu.cpp" />
