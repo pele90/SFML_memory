@@ -13,9 +13,9 @@ public:
 	int GetValue();
 	bool IsCardFlipped();
 	CardAction GetCardAction();
-	void SetPosition(int x, int y);
+	void SetPosition(float x, float y);
 	bool CheckBoundaries(int x, int z);
-	void Draw(sf::RenderWindow& renderWindow);
+	void Draw(sf::RenderWindow& renderWindow, sf::Clock clock);
 
 private:
 	int _cardValue;
@@ -28,7 +28,6 @@ private:
 	sf::Time _spinTime = sf::seconds(SPIN_TIME);
 	sf::Time _halfSpinTime = _spinTime / 2.f;
 	CardAction _cardAction = NOTHING;
-	sf::Clock _clock;
 	sf::Time _currentTime;
 	
 };

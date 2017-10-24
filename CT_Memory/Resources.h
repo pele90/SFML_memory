@@ -9,3 +9,8 @@
 #define VICTORY_SCREEN_TEXTURE "../data/victory_screen.png"
 #define COOLVETICA_FONT "../data/coolvetica rg.ttf"
 #define TABLE_TEXTURE "../data/background.png"
+#define CUP_TEXTURE "../data/trophy.png"
+
+#define BUZZER_SOUND "../data/buzzer.wav"
+#define CORRECT_SOUND "../data/correct.wav"
+#define AMBIENT_MUSIC "../data/ambient_music.wav"

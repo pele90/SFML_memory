@@ -7,7 +7,7 @@ Table::Table()
 	_backgroundSprite.setTexture(_backgroundTexture);
 
 	// Initialize random seed
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 }
 
 void Table::InitGrid(sf::RenderWindow& window)
@@ -53,13 +53,13 @@ void Table::InitGrid(sf::RenderWindow& window)
 	}
 }
 
-void Table::Draw(sf::RenderWindow& window)
+void Table::Draw(sf::RenderWindow& window, sf::Clock clock)
 {
 	window.draw(_backgroundSprite);
 
 	for (auto& card : _cards)
 	{
-		card->Draw(window);
+		card->Draw(window, clock);
 	}
 }
 

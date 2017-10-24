@@ -3,10 +3,10 @@
 
 struct Placement
 {
-	Placement(sf::Vector2u position, float angle)
+	Placement(sf::Vector2f position, float angle)
 		: _position(position), _angle(angle) {}
 
-	sf::Vector2u _position;
+	sf::Vector2f _position;
 	float _angle;
 };
 
@@ -16,7 +16,7 @@ public:
 	GUI();
 
 	void Setup(sf::RenderWindow& window, std::vector<Player*> players);
-	void Draw(sf::RenderWindow& window);
+	void Draw(sf::RenderWindow& window, float fps);
 	void SetActivePlayerColor(int i);
 	void SetDefaultPlayerColor(int i);
 	void Reset();
@@ -28,4 +28,5 @@ private:
 	sf::Font _font;
 	std::vector<sf::Text> _playerNames;
 	std::vector<Placement> _placements;
+	sf::Text _fpsText;
 };

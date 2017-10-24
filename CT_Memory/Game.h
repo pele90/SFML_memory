@@ -5,6 +5,8 @@
 #include "Player.h"
 #include "GUI.h"
 
+#define CARDS_DELAY_TIME 1 // time to wait before turning the selected cards face down
+
 // This class can be singleton but being static makes it cleaner, no other reason
 class Game {
 
@@ -40,5 +42,11 @@ private:
 	static int _numberOfPlayers;
 	static int _playerCounter;
 	static GUI _gui;
-	static bool _waiting;
+	static sf::Clock _clock;
+	static float _fps;
+	static sf::Music _ambientMusic;
+	static sf::SoundBuffer _buzzerSoundBuffer;
+	static sf::SoundBuffer _correctSoundBuffer;
+	static sf::Sound _buzzerSound;
+	static sf::Sound _correctSound;
 };

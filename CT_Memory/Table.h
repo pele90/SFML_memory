@@ -12,7 +12,7 @@ public:
 	Table();
 
 	void InitGrid(sf::RenderWindow& window);
-	void Draw(sf::RenderWindow& window);
+	void Draw(sf::RenderWindow& window, sf::Clock clock);
 	void CleanTable();
 	void CheckIfCardIsClicked(int x, int y);
 	void GenerateGridSize(size_t &row, size_t &column);

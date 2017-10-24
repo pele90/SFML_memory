@@ -14,4 +14,6 @@ private:
 	sf::Text _scoreboard;
 	sf::Text _winner;
 	sf::Font _font;
+	sf::Texture _cupTexture;
+	sf::Sprite _cupSprite;
 };

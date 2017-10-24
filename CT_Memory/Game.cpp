@@ -12,6 +12,23 @@ void Game::Start(void)
 		return;
 
 	_mainWindow.create(sf::VideoMode(1280, 960, 32), "Memory");
+	_mainWindow.setFramerateLimit(60);
+
+	if(!_ambientMusic.openFromFile(AMBIENT_MUSIC))
+		std::cerr << "Could not load music file" << std::endl;
+
+	if(!_buzzerSoundBuffer.loadFromFile(BUZZER_SOUND))
+		std::cerr << "Could not load \"buffer\" sound file" << std::endl;
+
+	if (!_correctSoundBuffer.loadFromFile(CORRECT_SOUND))
+		std::cerr << "Could not load \"correct\" sound file" << std::endl;
+
+	_ambientMusic.setLoop(true);
+
+	_buzzerSound.setBuffer(_buzzerSoundBuffer);
+	_buzzerSound.setVolume(50); // this sound has 50% lower volume because it's annoying
+
+	_correctSound.setBuffer(_correctSoundBuffer);
 
 	_gameState = Game::ShowingSplash;
 
@@ -53,6 +70,11 @@ void Game::GameLoop()
 		}
 		case Game::Playing:
 		{
+			sf::Time currentTime = _clock.getElapsedTime();
+			_fps = 1.0f / currentTime.asSeconds();
+
+			_clock.restart().asSeconds();
+
 			_mainWindow.clear(sf::Color(0, 0, 0));
 
 			if (_table.GetRemainingPairs() == 0)
@@ -69,10 +91,16 @@ void Game::GameLoop()
 					// If two cards in the <selectedCards> container have the same value
 					if (_table.CheckSelectedCards())
 					{
+						_correctSound.play();
 						_activePlayer->AddScore();
 					}
 					else
 					{
+						_buzzerSound.play();
+
+						// time to wait before turning both card faced down
+						sf::sleep(sf::seconds(CARDS_DELAY_TIME));
+
 						// Return previously active player's text color to default
 						_gui.SetDefaultPlayerColor(_playerCounter);
 
@@ -114,13 +142,14 @@ void Game::GameLoop()
 				}
 
 				// Draw table and cards sprites
-				_table.Draw(_mainWindow);
+				_table.Draw(_mainWindow, _clock);
 
-				_gui.Draw(_mainWindow);
+				_gui.Draw(_mainWindow, _fps);
 
 				// SFML method for showing all drawn textures and sprites on screen
 				_mainWindow.display();
 			}
+
 			break;
 		}
 		case Game::ShowingVictoryScreen:
@@ -143,6 +172,7 @@ void Game::ShowSplashScreen()
 	else
 	{
 		_gameState = Game::ShowingNumOfPlayersMenu;
+		_ambientMusic.play();
 	}
 }
 
@@ -275,4 +305,10 @@ Player* Game::_activePlayer;
 int Game::_numberOfPlayers;
 int Game::_playerCounter = 0;
 GUI Game::_gui;
-bool Game::_waiting;
+sf::Clock Game::_clock;
+float Game::_fps;
+sf::Music Game::_ambientMusic;
+sf::SoundBuffer Game::_buzzerSoundBuffer;
+sf::SoundBuffer Game::_correctSoundBuffer;
+sf::Sound Game::_buzzerSound;
+sf::Sound Game::_correctSound;
